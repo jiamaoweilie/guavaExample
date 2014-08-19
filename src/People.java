@@ -1,7 +1,9 @@
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class People {
 //                peopleFromChina.add(person);
 //        }
 
-        List<Person> filteredPeople = newArrayList(filter(people, and(form("China"), orderThan(25))));
+        List<Person> filteredPeople = newArrayList(filter(people, and(form("hehe"), orderThan(25))));
 
         return filteredPeople;
     }
@@ -38,6 +40,19 @@ public class People {
         };
     }
 
+    public Object findTong(List<Person> people){
+        Optional<Person> optionalTong= Iterables.tryFind(people, new Predicate<Person>() {
+            @Override
+            public boolean apply(Person person) {
+                return person.getName().equals("Tong");
+            }
+        });
+        if(optionalTong.isPresent())
+            return optionalTong;
+        else
+            return "Not Found";
+    }
+
     private Predicate<Person> orderThan(final int age) {
         return new Predicate<Person>() {
             @Override
@@ -46,6 +61,7 @@ public class People {
             }
         };
     }
+
 
     public List<String> getName(List<Person> people){
 //        List<String> names = newArrayList();
@@ -82,7 +98,7 @@ public class People {
     public static void main(String[] args) {
         List<Person> people = newArrayList(new Person("Wei", "China", 25), new Person("Tong", "China", 26), new Person("Nive", "India", 23), new Person("Tim", "USA", 56));
         People people1 = new People(people);
-        System.out.println(people1.peopleFilter().get(0).getName());
+        System.out.println(people1.peopleFilter());
         System.out.println(people1.getName(people).get(0));
         System.out.println(people1.chineseName(people).get(0));
     }
